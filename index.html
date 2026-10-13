@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="For Moraki">
+<meta property="og:description" content="Six locks. Open me.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Friday Date Invitation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+<style>
+:root {
+color-scheme: dark;
+--wine: #2a0a13;
+--ivory: #f6ead9;
+--mute: #b9a09c;
+--rose: #e9a3ab;
+--line: rgba(246, 234, 217, .18);
+--serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+--sans: "Jost", "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+}
+html { background: var(--wine); }
+body {
+background: var(--wine);
+color: var(--ivory);
+font-family: var(--sans);
+font-size: 17px;
+line-height: 1.55;
+-webkit-font-smoothing: antialiased;
+}
+.wrap {
+max-width: 440px;
+margin-inline: auto;
+padding-inline: 26px;
+padding-block: 44px 64px;
+display: flex;
+flex-direction: column;
+gap: 30px;
+}
+.label {
+font-family: var(--sans);
+font-size: 11px;
+font-weight: 500;
+letter-spacing: .2em;
+text-transform: uppercase;
+color: var(--mute);
+}
+.hero { display: flex; flex-direction: column; gap: 18px; }
+h1 {
+margin: 0;
+font-family: var(--serif);
+font-style: italic;
+font-weight: 500;
+font-size: clamp(58px, 18vw, 84px);
+line-height: .92;
+letter-spacing: -.01em;
+text-wrap: balance;
+}
+h1 em { font-style: italic; color: var(--rose); }
+.hero p { margin: 0; max-width: 30ch; }
+.progress {
+position: sticky;
+top: env(safe-area-inset-top, 0px);
+z-index: 5;
+display: flex;
+align-items: center;
+gap: 14px;
+margin-inline: -26px;
+padding: 12px 26px;
+background: var(--wine);
+}
+.pips { display: flex; gap: 5px; flex: 1; }
+.pip { flex: 1; height: 2px; background: var(--line); transition: background .5s; }
+.pip.on { background: var(--rose); }
+.levels { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
+.level { border-top: 1px solid var(--line); scroll-margin-top: 56px; }
+.lock {
+all: unset;
+box-sizing: border-box;
+width: 100%;
+display: grid;
+grid-template-columns: 1fr auto auto;
+align-items: center;
+gap: 12px;
+padding-block: 20px;
+cursor: pointer;
+color: var(--ivory);
+-webkit-tap-highlight-color: transparent;
+transition: opacity .4s;
+}
+.lock:disabled { cursor: default; }
+.lock:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+.level.locked .lock { opacity: .38; }
+.lock-text { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.lv-name { font-family: var(--serif); font-weight: 500; font-size: 29px; line-height: 1.05; }
+.lv-state { color: var(--mute); text-align: right; }
+.level.next .lv-state { color: var(--rose); }
+.level.open .lv-state { display: none; }
+.pad { width: 22px; height: 22px; flex: none; color: var(--mute); }
+.pad .shackle { transition: transform .5s ease; transform-origin: 17px 11px; }
+.level.next .pad { color: var(--rose); }
+.level.open .pad { color: var(--rose); }
+.level.open .pad .shackle { transform: translateY(-1.5px) rotate(30deg); }
+.reveal { padding-bottom: 30px; display: flex; flex-direction: column; gap: 16px; }
+.level.just-opened .reveal { animation: rise .7s ease; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+.reveal p { margin: 0; }
+.quiet { color: var(--mute); font-size: 15px; }
+.emo { font-style: normal; font-size: .7em; margin-left: .25em; }
+.display {
+font-family: var(--serif);
+font-weight: 500;
+font-size: clamp(40px, 12.5vw, 52px);
+line-height: 1;
+}
+.display.it { font-style: italic; }
+.plan { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.plan li { padding-block: 12px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.plan li:first-child { border-top: 0; padding-top: 0; }
+.plan b { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 26px; line-height: 1.1; }
+.menu {
+border: 1px solid var(--line);
+padding: 26px 18px 28px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 18px;
+text-align: center;
+}
+.menu-item { display: flex; flex-direction: column; gap: 2px; }
+.menu-item b { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 27px; line-height: 1.1; }
+.menu .rule { width: 28px; height: 1px; background: var(--rose); }
+.checks { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; }
+.checks legend { padding: 0; margin-bottom: 6px; }
+.check {
+position: relative;
+display: grid;
+grid-template-columns: 22px 1fr;
+gap: 16px;
+align-items: center;
+padding-block: 14px;
+border-top: 1px solid var(--line);
+cursor: pointer;
+}
+.check:first-of-type { border-top: 0; }
+.check input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.box {
+width: 22px; height: 22px;
+border: 1px solid var(--ivory);
+display: grid; place-items: center;
+transition: background .2s, border-color .2s;
+}
+.box::after {
+content: "";
+width: 11px; height: 6px;
+border-left: 1.5px solid var(--wine);
+border-bottom: 1.5px solid var(--wine);
+transform: translateY(-1.5px) rotate(-45deg) scale(0);
+transition: transform .2s;
+}
+.check input:checked ~ .box { background: var(--rose); border-color: var(--rose); }
+.check input:checked ~ .box::after { transform: translateY(-1.5px) rotate(-45deg) scale(1); }
+.check input:focus-visible ~ .box { outline: 1px solid var(--rose); outline-offset: 4px; }
+.check-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.check-text b { font-family: var(--serif); font-weight: 500; font-size: 24px; line-height: 1.15; }
+.hint { color: var(--rose); font-size: 15px; min-height: 1.55em; }
+.answers { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn {
+all: unset;
+box-sizing: border-box;
+display: block;
+cursor: pointer;
+text-align: center;
+font-family: var(--sans);
+font-weight: 500;
+font-size: 13px;
+letter-spacing: .16em;
+text-transform: uppercase;
+padding: 17px 22px;
+border: 1px solid var(--ivory);
+color: var(--ivory);
+transition: transform .3s ease, background .2s, color .2s;
+-webkit-tap-highlight-color: transparent;
+}
+.btn:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+.btn.solid { background: var(--ivory); color: var(--wine); }
+.btn-yes { flex: 1 1 160px; }
+.btn-no { border-color: var(--line); color: var(--mute); }
+.tease { min-height: 1.55em; color: var(--rose); font-size: 15px; }
+.ticket { margin: 0; display: flex; flex-direction: column; }
+.ticket div { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding-block: 11px; border-top: 1px solid var(--line); align-items: baseline; }
+.ticket div:last-child { border-bottom: 1px solid var(--line); }
+.ticket dd { margin: 0; min-width: 0; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.textlink { all: unset; cursor: pointer; color: var(--mute); font-size: 14px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; align-self: flex-start; }
+.textlink:focus-visible { outline: 1px solid var(--rose); outline-offset: 4px; }
+footer { display: flex; justify-content: center; }
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<span class="label">Friday · 16 October</span>
+<h1>Hey, <em>Moraki.</em></h1>
+<p>You are invited on a date this Friday. The details are behind six locks. Tap each one to open it.</p>
+</header>
+<div class="progress" aria-live="polite">
+<div class="pips" id="pips" aria-hidden="true"></div>
+<span class="label" id="count">0 of 6 open</span>
+</div>
+<main class="levels">
+<section class="level" data-name="The time">
+<div class="reveal">
+<span class="label">Arrival</span>
+<p class="display">7:00 – 7:30 pm</p>
+<p class="quiet">Friday 16 October. Being fashionably on time is encouraged.</p>
+</div>
+</section>
+<section class="level" data-name="The plan">
+<div class="reveal">
+<ul class="plan">
+<li><b>Dinner date<span class="emo" aria-hidden="true">🕯️</span></b><span class="quiet">Candles included.</span></li>
+<li><b>Photo album<span class="emo" aria-hidden="true">📸</span></b><span class="quiet">Looking back through our pictures.</span></li>
+<li><b>Body painting<span class="emo" aria-hidden="true">🎨</span></b><span class="quiet">Optional. Highly recommended.</span></li>
+<li><b>Movie night<span class="emo" aria-hidden="true">🎬</span></b><span class="quiet">We pick the film together, on the spot. Negotiations may run longer than the film.</span></li>
+</ul>
+</div>
+</section>
+<section class="level" data-name="The place">
+<div class="reveal">
+<p class="display it">My flat.</p>
+<p>One last proper evening here. A nice way to say goodbye to the flat where so much of our love was created and so many of our first memories were made.</p>
+</div>
+</section>
+<section class="level" data-name="What I bring">
+<div class="reveal">
+<div class="menu">
+<span class="label">Provided by the host</span>
+<div class="menu-item"><b>A nice steak dinner<span class="emo" aria-hidden="true">🥩</span></b><span class="quiet">Cooked by me. Details to be confirmed.</span></div>
+<span class="rule" aria-hidden="true"></span>
+<div class="menu-item"><b>Portuguese wine<span class="emo" aria-hidden="true">🍷</span></b><span class="quiet">Refills at the host's discretion.</span></div>
+<span class="rule" aria-hidden="true"></span>
+<div class="menu-item"><b>A pinch of Greek god<span class="emo" aria-hidden="true">🏛️</span></b><span class="quiet">Photo withheld for your own safety.</span></div>
+</div>
+</div>
+</section>
+<section class="level" data-name="What you bring">
+<div class="reveal">
+<fieldset class="checks">
+<legend class="label">Your checklist</legend>
+<label class="check" for="pick-self">
+<input type="checkbox" id="pick-self" value="self"><span class="box" aria-hidden="true"></span>
+<span class="check-text"><b>Your beautiful self<span class="emo" aria-hidden="true">✨</span></b><span class="quiet">The one thing I can't provide.</span></span>
+</label>
+<label class="check" for="pick-dessert">
+<input type="checkbox" id="pick-dessert" value="dessert"><span class="box" aria-hidden="true"></span>
+<span class="check-text"><b>Dessert<span class="emo" aria-hidden="true">🍰</span></b><span class="quiet">Your choice.</span></span>
+</label>
+<label class="check" for="pick-mood">
+<input type="checkbox" id="pick-mood" value="mood"><span class="box" aria-hidden="true"></span>
+<span class="check-text"><b>Your sexy mood<span class="emo" aria-hidden="true">😏</span></b><span class="quiet">It travels well.</span></span>
+</label>
+<label class="check" for="pick-underwear">
+<input type="checkbox" id="pick-underwear" value="underwear"><span class="box" aria-hidden="true"></span>
+<span class="check-text"><b>Sexy underwear<span class="emo" aria-hidden="true">🔥</span></b><span class="quiet">Optional, but really encouraged.</span></span>
+</label>
+<label class="check" for="pick-kiss">
+<input type="checkbox" id="pick-kiss" value="kiss"><span class="box" aria-hidden="true"></span>
+<span class="check-text"><b>A kiss at the door<span class="emo" aria-hidden="true">💋</span></b><span class="quiet">Payable on arrival.</span></span>
+</label>
+</fieldset>
+<p class="hint" id="pick-hint" aria-live="polite"></p>
+</div>
+</section>
+<section class="level" data-name="Your answer">
+<div class="reveal">
+<div id="view-ask" class="stack">
+<p class="display it">So, are you coming?</p>
+<button class="btn solid" id="btn-yes" type="button">Yes, obviously</button>
+<button class="btn" id="btn-yes-too" type="button">How can I say no to that?</button>
+<p class="quiet">Both doors lead to the same dinner.</p>
+</div>
+<div id="view-yes" class="stack" hidden>
+<p class="display it">It's a date.</p>
+<dl class="ticket">
+<div><dt class="label">When</dt><dd>Friday 16 October, 7:00 – 7:30 pm</dd></div>
+<div><dt class="label">Where</dt><dd>My flat</dd></div>
+<div><dt class="label">You bring</dt><dd id="ticket-pick">Yourself</dd></div>
+</dl>
+<p class="quiet">One last step. He only finds out once you send it.</p>
+<a class="btn solid" id="wa-yes" target="_blank" rel="noopener" href="https://wa.me/">Send my yes on WhatsApp</a>
+<a class="btn" id="gcal" target="_blank" rel="noopener" href="https://calendar.google.com/">Add to Google Calendar</a>
+</div>
+</div>
+</section>
+</main>
+<footer><button class="textlink" id="reset" type="button">Lock everything again</button></footer>
+</div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<script>
+(function () {
+var CONFIG = {
+whatsappNumber: "",
+minPicks: 2,
+calendarTitle: "Date night",
+calendarLocation: "The flat",
+calendarDates: "20261016T170000Z/20261016T220000Z",
+calendarGuest: ""
+};
+var ITEMS = [
+{ id: "self", ticket: "Your beautiful self", msg: "my beautiful self" },
+{ id: "dessert", ticket: "Dessert", msg: "dessert" },
+{ id: "mood", ticket: "Your sexy mood", msg: "my sexy mood" },
+{ id: "underwear", ticket: "Sexy underwear", msg: "sexy underwear" },
+{ id: "kiss", ticket: "A kiss at the door", msg: "a kiss at the door" }
+];
+var TEASES = [
+"Are you sure? Have another look.",
+"That button seems broken. Try the other one.",
+"Last chance to reconsider."
+];
+var KEY = "friday-date-v2";
+var TOTAL = 6;
+var state = { opened: 0, picks: [], answer: null };
+try { localStorage.removeItem(KEY); localStorage.removeItem("friday-date-v1"); } catch (e) {}
+function save() {}
+var $ = function (id) { return document.getElementById(id); };
+var sections = Array.prototype.slice.call(document.querySelectorAll(".level"));
+var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+sections.forEach(function (sec, i) {
+var n = i + 1;
+var btn = document.createElement("button");
+btn.type = "button";
+btn.className = "lock";
+btn.id = "lock-" + n;
+btn.innerHTML =
+'<span class="lock-text"><span class="label">Level ' + n + '</span>' +
+'<span class="lv-name">' + sec.dataset.name + '</span></span>' +
+'<span class="label lv-state"></span>' +
+'<svg class="pad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true">' +
+'<path class="shackle" d="M7.5 11V8a4.5 4.5 0 0 1 9 0v3"/>' +
+'<rect x="5" y="11" width="14" height="9.5" rx="1"/></svg>';
+btn.addEventListener("click", function () { unlock(n); });
+sec.insertBefore(btn, sec.firstChild);
+});
+var pips = $("pips");
+for (var p = 0; p < TOTAL; p++) {
+var pip = document.createElement("span");
+pip.className = "pip";
+pips.appendChild(pip);
+}
+function joinList(words) {
+if (words.length < 2) return words.join("");
+return words.slice(0, -1).join(", ") + " and " + words[words.length - 1];
+}
+function chosen() { return ITEMS.filter(function (it) { return state.picks.indexOf(it.id) !== -1; }); }
+function enoughPicks() { return state.picks.length >= CONFIG.minPicks; }
+function waLink(text) {
+var num = (CONFIG.whatsappNumber || "").replace(/\D/g, "");
+return "https://api.whatsapp.com/send?" + (num ? "phone=" + num + "&" : "") + "text=" + encodeURIComponent(text);
+}
+function render() {
+sections.forEach(function (sec, i) {
+var n = i + 1;
+var open = n <= state.opened;
+var isNextSlot = n === state.opened + 1;
+var blocked = n === TOTAL && !enoughPicks();
+var next = isNextSlot && !blocked;
+sec.classList.toggle("open", open);
+sec.classList.toggle("next", next);
+sec.classList.toggle("locked", !open && !next);
+sec.querySelector(".lock").disabled = !next;
+sec.querySelector(".lv-state").textContent =
+open ? "" : next ? "Tap to unlock" : (isNextSlot && blocked) ? "Finish level 5" : "";
+sec.querySelector(".reveal").hidden = !open;
+});
+Array.prototype.forEach.call(pips.children, function (el, i) { el.classList.toggle("on", i < state.opened); });
+$("count").textContent = state.opened + " of " + TOTAL + " open";
+ITEMS.forEach(function (it) { $("pick-" + it.id).checked = state.picks.indexOf(it.id) !== -1; });
+var missing = CONFIG.minPicks - state.picks.length;
+$("pick-hint").textContent = missing > 0
+? (state.picks.length === 0 ? "Tick at least " + CONFIG.minPicks + " to open level 6." : missing + " more to open level 6.")
+: (state.opened >= TOTAL ? "" : "Good choices. Level 6 is ready.");
+$("view-ask").hidden = !!state.answer;
+$("view-yes").hidden = state.answer !== "yes";
+var picks = chosen();
+var ticket = picks.length ? picks.map(function (it) { return it.ticket; }).join(", ") : "Yourself";
+$("ticket-pick").textContent = ticket;
+$("wa-yes").href = waLink("Yes, my love! I'm looking forward to Friday 🥰 I'll be at yours between 7:00 and 7:30 pm. I will definitely bring myself, and a few other things to make the night one to remember ❤️");
+var q = new URLSearchParams({
+action: "TEMPLATE",
+text: CONFIG.calendarTitle,
+dates: CONFIG.calendarDates,
+location: CONFIG.calendarLocation,
+details: "Arrive between 7:00 and 7:30 pm. Bringing: " + ticket + "."
+});
+if (CONFIG.calendarGuest) q.set("add", CONFIG.calendarGuest);
+$("gcal").href = "https://calendar.google.com/calendar/render?" + q.toString();
+}
+function unlock(n) {
+if (n !== state.opened + 1) return;
+if (n === TOTAL && !enoughPicks()) return;
+state.opened = n;
+save();
+render();
+var sec = sections[n - 1];
+sec.classList.add("just-opened");
+setTimeout(function () { sec.classList.remove("just-opened"); }, 800);
+sec.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+}
+ITEMS.forEach(function (it) {
+$("pick-" + it.id).addEventListener("change", function (e) {
+var at = state.picks.indexOf(it.id);
+if (e.target.checked && at === -1) state.picks.push(it.id);
+if (!e.target.checked && at !== -1) state.picks.splice(at, 1);
+save();
+render();
+});
+});
+function sayYes() {
+state.answer = "yes";
+render();
+hearts();
+}
+$("btn-yes").addEventListener("click", sayYes);
+$("btn-yes-too").addEventListener("click", sayYes);
+$("reset").addEventListener("click", function () {
+state = { opened: 0, picks: [], answer: null };
+render();
+window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+});
+function hearts() {
+if (reduced) return;
+var c = $("confetti"), ctx = c.getContext("2d");
+var dpr = Math.min(window.devicePixelRatio || 1, 2);
+var w = c.clientWidth, h = c.clientHeight;
+c.width = w * dpr; c.height = h * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+var parts = [];
+for (var i = 0; i < 26; i++) {
+parts.push({
+x: Math.random() * w, y: -20 - Math.random() * h * 0.6,
+s: 12 + Math.random() * 14, v: 1.4 + Math.random() * 2,
+d: (Math.random() - 0.5) * 0.8, a: 0.5 + Math.random() * 0.5
+});
+}
+var start = performance.now();
+(function frame(t) {
+ctx.clearRect(0, 0, w, h);
+var age = t - start;
+var fade = age > 3200 ? Math.max(0, 1 - (age - 3200) / 800) : 1;
+ctx.fillStyle = "#e9a3ab";
+parts.forEach(function (q) {
+q.y += q.v; q.x += q.d;
+ctx.globalAlpha = q.a * fade;
+ctx.font = q.s + "px serif";
+ctx.fillText("♥", q.x, q.y);
+});
+ctx.globalAlpha = 1;
+if (age < 4000) requestAnimationFrame(frame); else ctx.clearRect(0, 0, w, h);
+})(start);
+}
+render();
+})();
+</script>
+</body>
+</html>
